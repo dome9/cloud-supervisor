@@ -1,0 +1,22 @@
+{
+  "name": "cloud-supervisor",
+  "version": "1.0.0",
+  "description": "A CLI utility to govern AWS accounts using Dome9 Compliance Engine",
+  "main": "c-supervisor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "AWS",
+    "Dome9",
+    "Governance",
+    "rule-engine"
+  ],
+  "author": "Roy Feintuch (roy at dome9 dot com)",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "aws-sdk": "^2.7.13",
+    "lodash": "^4.17.2",
+    "request": "^2.79.0"
+  }
+}
