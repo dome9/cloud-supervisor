@@ -1,4 +1,4 @@
-# Temp Documentation of Assessment / Rules Management API
+# Temp Documentation of Compliance Assessment API
 This will be removed from this repo and be integrated into Dome9 V2 API docs located at: https://github.com/Dome9/V2_API
 
 ## Performing Assessments

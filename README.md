@@ -1,30 +1,28 @@
 
 
 ```
-                                                                                                                                                                                      
-  ,ad8888ba,   88                                     88           ad88888ba                                                                  88                                      
- d8"'    `"8b  88                                     88          d8"     "8b                                                                 ""                                      
-d8'            88                                     88          Y8,                                                                                                                 
-88             88   ,adPPYba,   88       88   ,adPPYb,88          `Y8aaaaa,    88       88  8b,dPPYba,    ,adPPYba,  8b,dPPYba,  8b       d8  88  ,adPPYba,   ,adPPYba,   8b,dPPYba,  
-88             88  a8"     "8a  88       88  a8"    `Y88  aaaaaaaa  `"""""8b,  88       88  88P'    "8a  a8P_____88  88P'   "Y8  `8b     d8'  88  I8[    ""  a8"     "8a  88P'   "Y8  
-Y8,            88  8b       d8  88       88  8b       88  """"""""        `8b  88       88  88       d8  8PP"""""""  88           `8b   d8'   88   `"Y8ba,   8b       d8  88          
- Y8a.    .a8P  88  "8a,   ,a8"  "8a,   ,a88  "8a,   ,d88          Y8a     a8P  "8a,   ,a88  88b,   ,a8"  "8b,   ,aa  88            `8b,d8'    88  aa    ]8I  "8a,   ,a8"  88          
-  `"Y8888Y"'   88   `"YbbdP"'    `"YbbdP'Y8   `"8bbdP"Y8           "Y88888P"    `"YbbdP'Y8  88`YbbdP"'    `"Ybbd8"'  88              "8"      88  `"YbbdP"'   `"YbbdP"'   88          
-                                                                                            88                                                                                        
-                                                                                            88                                                                                        
+                                                                            
+,---.|                  |   ,---.                          o               
+|    |    ,---..   .,---|   `---..   .,---.,---.,---..    ,.,---.,---.,---.
+|    |    |   ||   ||   |---    ||   ||   ||---'|     \  / |`---.|   ||    
+`---'`---'`---'`---'`---'   `---'`---'|---'`---'`      `'  ``---'`---'`    
+                                      |                                                                                                                            88                                                                                        
 ```
 # Cloud-Supervisor
 Using Dome9's Compliance Engine for continuous compliance and enforcement of AWS environments.
 
 ## General
-This project a starting point that demonstrates how to utilize the Dome9 Compliance Engine as a mean to perform scheduled assessments for cloud environemtns and then have some automated actions to remediate.
-It is a node.js project that can be launched from any machine, but intended to be run from AWS Lambda execution environment.
+This project is a starting point that demonstrates how to utilize the Dome9 Compliance Engine as a mean to perform scheduled assessments for cloud environemets and then to have some automated actions to remediate.
+It is a node.js project that can be launched from any machine, but intended to be run automatically via AWS Lambda execution environment.
 
-The idea is to have this script running for each AWS account we wish to apply continous governance, where all scripts utilize the same centrally manged rule set (Dome9 bundle).
+The idea is to have this script running for each AWS account we wish to apply continous governance, where all scripts utilize the same centrally manged rule set (bundle).
 
 ## Getting started - setup
 * Make sure to have node.js *version 4.0* or up.
-* Clone this repo
+* Clone this repo.
+```
+git clone https://github.com/Dome9/cloud-supervisor.git
+```
 * Install dependencies:
 ```
 cd cloud-supervisor
@@ -41,12 +39,21 @@ npm install
     * bundleId: the Dome9 Bundle Id of the relevant rule-set (see next section)
     * awsAccId: The Dome9 Id of the relevant AWS account. Note: this is not the AWS acc number. We'll soon support providing this parameter instead.
 
-
+OSX, Linux:
+```bash
+export keyId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+... handle the remaining parameters ...
+```
+Windows:
+```
+set keyId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+... handle the remaining parameters ...
+```
 TODO - lambda installation / setup instructions
 
 
 ## Configuring the Dome9 Compliance Bundle
-* Create a new bundle that will be used for automated compliance / governance
+* Create a new bundle that will be used for automated compliance / governance. Note its ID (at the url bar) - you'll use it as the bundleId env parameter.
 * Create rules at will. Use our rule-builder and the CSPL reference document (Make sure you've got it!)
 * in the `Remediation` field of the rule add as the first line:
 ```
@@ -70,16 +77,6 @@ Meanwhile explore `actions.js` and see how easy it is to add a new action.
 
 ## Running the script (from local station)
 Make sure all env variables are set.
-On OSX,Linux:
-```bash
-export keyId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
-... handle the remaining parameters ...
-```
-In Windows:
-```
-set keyId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
-... handle the remaining parameters ...
-```
 Now, run the script:
 ```
 node c-supervisor.js
