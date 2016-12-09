@@ -6,7 +6,7 @@ and the rest of the parameters are the parameter that were provided in the rule.
 In this example (createTag) the rule's Remediation field looks something like:
 *AUTO* create_tag PROBLEM non_complying_region
 
-For simplicity it is assumed that the the script is run by AWS user / role in the same AWS account as the non complting entities. 
+For simplicity it is assumed that the the script is run by an AWS user / role in the same AWS account as the non complying entities. 
 This will be the example where we'll have a Lambda on each AWS account.
 However, these actions could be more complex and assume into roles on other accounts. 
 */
