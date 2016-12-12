@@ -6,7 +6,7 @@
 |    |    ,---..   .,---|   `---..   .,---.,---.,---..    ,.,---.,---.,---.
 |    |    |   ||   ||   |---    ||   ||   ||---'|     \  / |`---.|   ||    
 `---'`---'`---'`---'`---'   `---'`---'|---'`---'`      `'  ``---'`---'`    
-                                      |                                                                                                                        
+                                      |
 ```
 # Cloud-Supervisor
 Using Dome9's Compliance Engine for continuous compliance and enforcement of AWS environments.
