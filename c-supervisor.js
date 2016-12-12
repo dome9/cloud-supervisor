@@ -10,6 +10,7 @@ var params = {
     awsAccId: process.env.awsAccId // The Dome9 Id of the relevant AWS account. TODO: allow to provide the AWS acc number instead of the Dome9 ID
 }
 
+// Assert on mandatory parameters
 _.forIn(params, (value, key) => {
     if (!value) {
         console.error(`${key} was not provided as an environment variable. Exiting...`);

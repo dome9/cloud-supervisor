@@ -13,7 +13,7 @@ However, these actions could be more complex and assume into roles on other acco
 
 const AWS = require('aws-sdk');
 
-function createTag(entity,key,value) {
+function createTag(entity, key, value) {
     if (!entity)
         throw "no entity was provided to tagInstance action";
 
@@ -26,7 +26,7 @@ function createTag(entity,key,value) {
         ],
         Tags: [
             {
-                Key: key || "CLOUD-SUPERVISOR" , // default key if not provided
+                Key: key || "CLOUD-SUPERVISOR", // default key if not provided
                 Value: value || new Date().toUTCString() // default value if not provided
             }
         ]
@@ -48,12 +48,12 @@ function stopInstance(entity) {
     var ec2 = new AWS.EC2({ region: region });
 
     var params = {
-        InstanceIds: [ 
+        InstanceIds: [
             entity.id
         ],
         Force: false
     };
-    
+
     ec2.stopInstances(params, function (err, data) {
         if (err)
             console.error(err, err.stack); // an error occurred
@@ -61,3 +61,28 @@ function stopInstance(entity) {
     });
 }
 exports.stop_instance = stopInstance;
+
+
+
+/*
+
+This function marks the problematic entity with the tag "TO_STOP" and the desired stopping time which is a parameter (days in th future).
+The compliance engine can be used also for the actual house keeping and stop the relevant instances after their time is due.
+For this, use this logic:
+Instance where isRunning should not have tags with [key='TO_STOP' and value before (0,'days')]
+
+and the auto remediation action:
+*AUTO* stop_instance
+
+*/
+function markForStop(entity, numOfDays) {
+    numOfDays = parseInt(numOfDays);
+    if (!numOfDays)
+        numOfDays = 3;// default value - stop in 3 days
+    
+    var stopTime = new Date();
+    stopTime.setDate(stopTime.getDate() + numOfDays);
+    stopTimeUnix = Math.floor(stopTime.getTime() / 1000); // convert to unix time (in seconds rather than millis in JS)
+    createTag(entity, "TO_STOP",String(stopTimeUnix)); 
+}
+exports.mark_for_stop = markForStop;
