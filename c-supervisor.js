@@ -58,7 +58,7 @@ function handleResult(res) {
             if (actionFunc) {
                 try {
                     console.log(`executing action '${action}' for ${entity.type}: id=${entity.id}, name=${entity.name} region=${entity.region}`);
-                    actionFunc.apply(undefined, [entity].concat(params));
+                    actionFunc.apply(undefined, [elm.rule,entity].concat(params));
                 }
                 catch (err) {
                     console.error(`error occured during execution of action ${action}: ${err}`);
