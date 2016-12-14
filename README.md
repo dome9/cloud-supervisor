@@ -68,12 +68,13 @@ Examples:
 ```
 
 ### Supported automatic actions
-Currently these are the only provided automatic actions:
-* `stop_instance`
-* `create_tag`
+* `stop_instance` : will stop the relevant instamce
+* `create_tag` <tag_key> <tag_value> : will insert the tag with the desired key/value [make sure there are relevant permissions to stop instances]
+* `mark_for_stop` <days> - will add the tag 'TO_STOP' with the value X days in the future (as unix time stamp) [make sure there are relevant `ec2:CreateTags` permissions]
+* `send_sns` <topic_ARN> will send a message with the failed test/entity details to the relevant SNS Topic. [make sure there are relevant `sns:Publish` permissions to this SNS topic]
 
 We'll add many more soon.<br/>
-Meanwhile explore `actions.js` and see how easy it is to add a new action.
+Meanwhile, explore `actions.js` and see how easy it is to add a new action.
 
 ## Running the script (from local station)
 Make sure all env variables are set.
@@ -82,9 +83,61 @@ Now, run the script:
 node c-supervisor.js
 ```
 
-## Running the script from Lambda - TODO
-We'll soon provide instructions and a Lambda entry point script.
-This should work the same - just provide the env parameter to the Lambda via the new Lambda env variables capability.
+## Deploying the script to AWS Lambda
+In the `scripts` folder you'll find the `package-lambda.sh` script. It'll create a package ready to be deployed to lambda.
+When creating the lamba function use these settings:
+* Runtime: Node.JS 4.3
+* Handler: lambda.myHandler
+* Role: create a new role for the `cloud-supervisor`. Provide the role with enough permission do perform your actions.
+* Timeout: Depending on your environemnt size, the bundle size (# of rules) and configured actions. The Dome9 system will take a few seconds to perfrom an assessment, and then the script will take additional time to automatically remediate. Set to at least 30 seconds, and monitor the execution time.
+* VPC : no need to be run inside VPC unless your custom actions needs to have network connections to your VPC instances/data.
+* Environment Variables: *Make sure* to include the requested environment variables:
+    * keyId
+    * keySecret 
+    * awsAccId
+    * bundleId
+
+## AWS IAM permissions
+AS the script will perform AWS API actions it'll need to have permissions to do so. If running locally make sure that the relevant user profile have enough permissions.
+If running from EC2 Insytance - make sure that the instance's role have this policy.
+If running from AWS Lambda, make sure the role have the default Lambda policy plus the relevant one.
+For the built-in functions this is the required AWS IAM policy:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "allowSNS",
+            "Action": [
+                "sns:Publish"
+            ],
+            "Effect": "Allow",
+            "Resource": "REPLACE HERE WITH THE ARN OF YOUR SNS TOPIC"
+        },
+        {
+            "Sid": "allowTags",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Sid": "allowStopInstance",
+            "Action": [
+                "ec2:StopInstances"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+
+## Running the script from Lambda
+- First trigger some manual invocations of the Lambda untill satisfied.
+- Then, schedule it to run in an interval of hour / day (but not less than an hour)
 
 
 
