@@ -68,10 +68,10 @@ Examples:
 ```
 
 ### Supported automatic actions
-* `stop_instance` : will stop the relevant instamce
+* `stop_instance` : will stop the relevant instance
 * `create_tag` <tag_key> <tag_value> : will insert the tag with the desired key/value [make sure there are relevant permissions to stop instances]
-* `mark_for_stop` <days> - will add the tag 'TO_STOP' with the value X days in the future (as unix time stamp) [make sure there are relevant `ec2:CreateTags` permissions]
-* `send_sns` <topic_ARN> will send a message with the failed test/entity details to the relevant SNS Topic. [make sure there are relevant `sns:Publish` permissions to this SNS topic]
+* `mark_for_stop` <days> : will add the tag 'TO_STOP' with the value X days in the future (as unix time stamp) [make sure there are relevant `ec2:CreateTags` permissions]
+* `send_sns` <topic_ARN> : will send a message with the failed test/entity details to the relevant SNS Topic. [make sure there are relevant `sns:Publish` permissions to this SNS topic]
 
 We'll add many more soon.<br/>
 Meanwhile, explore `actions.js` and see how easy it is to add a new action.
