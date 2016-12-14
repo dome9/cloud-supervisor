@@ -1,10 +1,12 @@
 /*
 Automated actions examples.
 This shows how easy it is to add autmated actions.
-The system will invoke your action with the 1st parameter is the entity that failed the test,
+The system will invoke your action where the 1st parameter is the failed rule, the 2nd is the entity that failed the test,
 and the rest of the parameters are the parameter that were provided in the rule.Remediation field
 In this example (createTag) the rule's Remediation field looks something like:
 *AUTO* create_tag PROBLEM non_complying_region
+
+where the action is implemented as function myAction(rule,entity,tagKey,tagValue){...}
 
 For simplicity it is assumed that the the script is run by an AWS user / role in the same AWS account as the non complying entities. 
 This will be the example where we'll have a Lambda on each AWS account.
