@@ -9,16 +9,16 @@
                                       |
 ```
 # Cloud-Supervisor
-Using Dome9's Compliance Engine for continuous compliance and enforcement of AWS environments.
+Using Dome9's Compliance Engine for **continuous compliance and remediation** of AWS environments.
 
 ## General
-This project is a starting point that demonstrates how to utilize the Dome9 Compliance Engine as a mean to perform scheduled assessments for cloud environemets and then to have some automated actions to remediate.
-It is a node.js project that can be launched from any machine, but intended to be run automatically via AWS Lambda execution environment.
+This project is a **starting point** that demonstrates how to utilize the Dome9 Compliance Engine as a mean to perform scheduled assessments for cloud environemets and then to have some automated actions to remediate.
+It is a node.js project that can be launched from any machine, but intended to be run automatically (periodically) via AWS Lambda execution environment.
 
-The idea is to have this script running for each AWS account we wish to apply continous governance, where all scripts utilize the same centrally manged rule set (bundle).
+The idea is to have this script running for each AWS account we wish to continously govern, where all script executions share the same centrally manged rule set (bundle).
 
 ## Getting started - setup
-* Make sure to have node.js *version 4.0* or up.
+* Make sure to have node.js **version 4.0** or up.
 * Clone this repo.
 ```
 git clone https://github.com/Dome9/cloud-supervisor.git
@@ -28,7 +28,7 @@ git clone https://github.com/Dome9/cloud-supervisor.git
 cd cloud-supervisor
 npm install
 ```
-* Make sure your AWS user / role has enough permissions to execute the desired actions (createTag, stopInstance)
+* Make sure your AWS user / role has enough permissions to execute the desired actions (ex: createTag, stopInstance). See the policy below as a good starting point.
 * If running from Lambda, make sure that the Lambda role has sufficient permissions
 * If running locally - make sure your AWS user has enough permissions, and that credentials are provided . AWS SDK for node.js expects credentials file to be located at ~/.aws/credentials (C:\Users\USER_NAME\.aws\credentials for Windows users) See http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-nodejs.html for more info.
 * Make sure you have a valid Dome9 user with enough permissions to view the relevant AWS accounts. It is recommended to create a new, dedicated Dome9 user with 'Auditor' role. 
@@ -91,7 +91,7 @@ When creating the lamba function use these settings:
 * Role: create a new role for the `cloud-supervisor`. Provide the role with enough permission do perform your actions.
 * Timeout: Depending on your environemnt size, the bundle size (# of rules) and configured actions. The Dome9 system will take a few seconds to perfrom an assessment, and then the script will take additional time to automatically remediate. Set to at least 30 seconds, and monitor the execution time.
 * VPC : no need to be run inside VPC unless your custom actions needs to have network connections to your VPC instances/data.
-* Environment Variables: *Make sure* to include the requested environment variables:
+* Environment Variables: *Make sure* to include the required environment variables:
     * keyId
     * keySecret 
     * awsAccId
