@@ -34,10 +34,13 @@ npm install
 * Make sure you have a valid Dome9 user with enough permissions to view the relevant AWS accounts. It is recommended to create a new, dedicated Dome9 user with 'Auditor' role. 
 * Create a Dome9 V2 API key for the selected Dome9 user at : https://secure.dome9.com/v2/settings/credentials
 * Set mandatory environment valriables:
-    * keyId: Dome9 V2 API key ID
-    * keySecret: Dome9 V2 API key secret
-    * bundleId: the Dome9 Bundle Id of the relevant rule-set (see next section)
-    * awsAccId: The Dome9 Id of the relevant AWS account. Note: this is not the AWS acc number. We'll soon support providing this parameter instead.
+
+Parameter | Description
+--- | ---
+**keyId**|  Dome9 V2 API key ID
+**keySecret** |  Dome9 V2 API key secret
+**bundleId** |  the Dome9 Bundle Id of the relevant rule-set (see next section)
+**awsAccId** | The ID of the relevant AWS account. This can be the Dome9 ID (UUID) or the AWS account number. **Note:** when executing via Lambda we can automatically resolve this on runtime.
 
 OSX, Linux:
 ```bash
@@ -53,7 +56,7 @@ TODO - lambda installation / setup instructions
 
 
 ## Configuring the Dome9 Compliance Bundle
-* Create a new bundle that will be used for automated compliance / governance. Note its ID (at the url bar) - you'll use it as the bundleId env parameter.
+* Create a new bundle that will be used for automated compliance / governance. Note its ID (at the url bar) - you'll use it as the `bundleId` env parameter.
 * Create rules at will. Use our rule-builder and the CSPL reference document (Make sure you've got it!)
 * in the `Remediation` field of the rule add as the first line:
 ```
@@ -76,12 +79,6 @@ Examples:
 We'll add many more soon.<br/>
 Meanwhile, explore `actions.js` and see how easy it is to add a new action.
 
-## Running the script (from local station)
-Make sure all env variables are set.
-Now, run the script:
-```
-node c-supervisor.js
-```
 
 ## Deploying the script to AWS Lambda
 In the `scripts` folder you'll find the `package-lambda.sh` script. It'll create a package ready to be deployed to lambda.
@@ -94,8 +91,10 @@ When creating the lamba function use these settings:
 * Environment Variables: *Make sure* to include the required environment variables:
     * keyId
     * keySecret 
-    * awsAccId
     * bundleId
+
+Note that *awsAccId* is not required when running via Lambda. The script will resolve this on runtime.
+
 
 ## AWS IAM permissions
 AS the script will perform AWS API actions it'll need to have permissions to do so. If running locally make sure that the relevant user profile have enough permissions.
@@ -134,6 +133,13 @@ For the built-in functions this is the required AWS IAM policy:
 }
 ```
 
+
+## Running the script (from local station)
+Make sure all env variables are set.
+Now, run the script:
+```
+node c-supervisor.js
+```
 
 ## Running the script from Lambda
 - First trigger some manual invocations of the Lambda untill satisfied.
