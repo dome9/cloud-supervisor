@@ -86,7 +86,7 @@ When creating the lamba function use these settings:
 * Runtime: Node.JS 4.3
 * Handler: lambda.myHandler
 * Role: create a new role for the `cloud-supervisor`. Provide the role with enough permission do perform your actions.
-* Timeout: Depending on your environemnt size, the bundle size (# of rules) and configured actions. The Dome9 system will take a few seconds to perfrom an assessment, and then the script will take additional time to automatically remediate. Set to at least 30 seconds, and monitor the execution time.
+* Timeout: Depending on your environemnt size, the bundle size (# of rules) and configured actions. The Dome9 system will take a few seconds to perform an assessment, and then the script will take additional time to automatically remediate. It is recommended to set the timeout to 60 seconds, and to monitor the execution time.
 * VPC : no need to be run inside VPC unless your custom actions needs to have network connections to your VPC instances/data.
 * Environment Variables: *Make sure* to include the required environment variables:
     * keyId
@@ -97,9 +97,11 @@ Note that *awsAccId* is not required when running via Lambda. The script will re
 
 
 ## AWS IAM permissions
-AS the script will perform AWS API actions it'll need to have permissions to do so. If running locally make sure that the relevant user profile have enough permissions.
-If running from EC2 Insytance - make sure that the instance's role have this policy.
-If running from AWS Lambda, make sure the role have the default Lambda policy plus the relevant one.
+As the script performs AWS API actions it needs to have relevant permissions to do so.<br/>
+If running *locally* (your workstation) make sure that the relevant *user profile* have enough permissions.
+If running from *EC2 Instance* - make sure that the *instance's role* has relevant policy.<br/>
+If running from *AWS Lambda*, make sure the role have the default Lambda policy plus the relevant one.
+
 For the built-in functions this is the required AWS IAM policy:
 ```json
 {
@@ -132,7 +134,6 @@ For the built-in functions this is the required AWS IAM policy:
     ]
 }
 ```
-
 
 ## Running the script (from local station)
 Make sure all env variables are set.
