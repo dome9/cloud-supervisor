@@ -139,3 +139,77 @@ function sendSNS(rule, entity, ARN) {
     });
 }
 exports.send_sns = sendSNS;
+
+/*
+
+Helper for AWS results callback. Make our API logs a bit clearer
+by showing witch of our actions triggered it, as it seems that the AWS
+SDK functions asynchronously execute.
+
+*/
+
+function handleAWSResponse(func,err,data) {
+    if (err) {
+        console.log("ERROR: "+func+": AWS API: "+JSON.stringify(err,null,4));
+    } else {
+        console.log("OK: "+func+": AWS API: "+JSON.stringify(data,null,4));
+    }
+}
+
+/*
+
+debug_action action. Simply dumps the contents of both of the supplied arguments
+and any optional arguments to the console log.
+
+*/
+
+function debugAction() {
+    var numargs=arguments.length;
+    if (numargs<2)
+        console.log("ERROR: debugAction: <2 arguments passed ("+numargs+")");
+    else {
+    	console.log("DEBUG: debugAction: rule arg="+JSON.stringify(arguments[0],null,4));
+    	console.log("DEBUG: debugAction: entity arg="+JSON.stringify(arguments[1],null,4));
+	
+ 	   for (var i=2;i<arguments.length;i++)
+    	    console.log("DEBUG: debugAction: opt arg "+i+"="+JSON.stringify(arguments[i],null,4));
+    }
+}
+exports.debug_action=debugAction;
+
+
+/*
+
+set_user_group action. This function pulls the username out of the entity 
+object and subscribes them to the group as indicated in the first parameter.
+
+*/
+ 
+function setUserGroup (rule,entity,groupname) {
+    if (!entity)
+        console.log("ERROR: setUserGroup: No entity provided to our action function");
+
+    else if (!groupname)
+        console.log("ERROR: setUserGroup: Group Name parameter not set");
+    else if (!entity.hasOwnProperty('name')) 
+        console.log("ERROR: setUserGroup: User name doesn't exist in entity (not IamUser rule?)");
+    else if (entity.name == "")
+        console.log("ERROR: setUserGroup: Can't deduce user name (not IamUser rule?)");
+    else if (entity.name=="<root_account>")
+        console.log("WARNING: setUserGroup: Can't set group membership for root user");
+    else if (/^[a-zA-Z=,@~]+$/.test(groupname)) {
+        var iam=new AWS.IAM();
+        // console.log("DEBUG: setUserGroup: Calling AWS API to join "+entity.name+" to group "+groupname);
+        var params={
+            GroupName: groupname,
+            UserName: entity.name
+        };
+        iam.addUserToGroup(params,function (err,data) {
+            handleAWSResponse("setUserGroup",err,data);
+        });
+    } else 
+        console.log("ERROR: setUserGroup: Invalid Group Name");
+	
+
+}
+exports.set_user_group=setUserGroup;
