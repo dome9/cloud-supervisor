@@ -130,6 +130,14 @@ For the built-in functions this is the required AWS IAM policy:
             ],
             "Effect": "Allow",
             "Resource": "*"
+        },
+        {
+            "Sid": "allowAddUserToGroup",
+            "Action": [
+                "iam:AddUserToGroup"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
         }
     ]
 }
