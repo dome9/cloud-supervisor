@@ -66,7 +66,6 @@ exports.stop_instance = stopInstance;
 
 
 /*
-
 This function marks the problematic entity with the tag "TO_STOP" and the desired stopping time which is a parameter (days in th future).
 The compliance engine can be used also for the actual house keeping and stop the relevant instances after their time is due.
 For this, use this logic:
@@ -74,7 +73,6 @@ Instance where isRunning should not have tags with [key='TO_STOP' and value befo
 
 and the auto remediation action:
 *AUTO* stop_instance
-
 */
 function markForStop(rule, entity, numOfDays) {
     numOfDays = parseInt(numOfDays);
@@ -95,7 +93,6 @@ ARN is a mandatory parameter.
 
 Usage in rule would be something like:
 *AUTO* send_sns arn:aws:sns:us-west-1:1234567890:cloud-supervisor
-
 */
 function sendSNS(rule, entity, ARN) {
     if(! ARN)
@@ -141,13 +138,9 @@ function sendSNS(rule, entity, ARN) {
 exports.send_sns = sendSNS;
 
 /*
-
 Helper for AWS results callback. Make our API logs a bit clearer
-by showing witch of our actions triggered it, as it seems that the AWS
-SDK functions asynchronously execute.
-
+by showing which c-supervisor triggered it
 */
-
 function handleAWSResponse(func,err,data) {
     if (err) {
         console.log("ERROR: "+func+": AWS API: "+JSON.stringify(err,null,4));
@@ -157,12 +150,9 @@ function handleAWSResponse(func,err,data) {
 }
 
 /*
-
 debug_action action. Simply dumps the contents of both of the supplied arguments
 and any optional arguments to the console log.
-
 */
-
 function debugAction() {
     var numargs=arguments.length;
     if (numargs<2)
@@ -179,12 +169,9 @@ exports.debug_action=debugAction;
 
 
 /*
-
 set_user_group action. This function pulls the username out of the entity 
 object and subscribes them to the group as indicated in the first parameter.
-
 */
- 
 function setUserGroup (rule,entity,groupname) {
     if (!entity)
         console.log("ERROR: setUserGroup: No entity provided to our action function");
