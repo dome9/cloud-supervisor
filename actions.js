@@ -126,7 +126,7 @@ function sendSNS(rule, entity, ARN) {
             },
             entityRegion: {
                 DataType:'String',
-                StringValue: entity.region
+                StringValue: entity.region ? entity.region : "-"
             }
         },
         MessageStructure: 'String',
