@@ -107,15 +107,15 @@ function sendSNS(rule, entity, ARN) {
         MessageAttributes: {
             ruleName: {
                 DataType: 'String',
-                StringValue: rule.name
+                StringValue: rule.name ? rule.name : "-"
             },
             entityId: {
                 DataType:'String',
-                StringValue: entity.id
+                StringValue: entity.id ? entity.id : "-"
             },
             entityType: {
                 DataType:'String',
-                StringValue: entity.type
+                StringValue: entity.type ? entity.type : "-"
             },
             entityVPC: {
                 DataType:'String',
@@ -139,7 +139,7 @@ exports.send_sns = sendSNS;
 
 /*
 Helper for AWS results callback. Make our API logs a bit clearer
-by showing which c-supervisor triggered it
+by showing which c-supervisor action triggered it
 */
 function handleAWSResponse(func,err,data) {
     if (err) {
