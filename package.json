@@ -4,7 +4,9 @@
   "description": "A CLI utility to govern AWS accounts using Dome9 Compliance Engine",
   "main": "c-supervisor.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "keywords": [
     "AWS",
@@ -17,6 +19,8 @@
   "dependencies": {
     "aws-sdk": "^2.7.13",
     "lodash": "^4.17.2",
-    "request": "^2.79.0"
-  }
+    "request": "^2.79.0",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }
